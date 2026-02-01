@@ -121,14 +121,20 @@
       background: linear-gradient(135deg, #ff6b9d, #e91e63);
       color: white;
       box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
+      transition: transform 0.35s ease, box-shadow 0.35s ease, padding 0.35s ease, font-size 0.35s ease;
     }
 
-    .btn-yes:hover {
+    .btn-yes.locked {
+      pointer-events: none;
+      cursor: default;
+    }
+
+    .btn-yes:not(.locked):hover {
       transform: scale(1.1);
       box-shadow: 0 8px 25px rgba(233, 30, 99, 0.5);
     }
 
-    .btn-yes:active {
+    .btn-yes:not(.locked):active {
       transform: scale(1.05);
     }
 
@@ -165,6 +171,14 @@
       font-size: 0.95rem;
       color: #ad1457;
       opacity: 0.8;
+    }
+
+    .unlock-hint {
+      margin-top: 0.75rem;
+      font-size: 1rem;
+      color: #c2185b;
+      font-family: 'Itim', cursive;
+      min-height: 1.5rem;
     }
 
     /* Success state */
@@ -258,12 +272,13 @@
     <p class="subtitle">(Pretty please with a cherry on top 🍒)</p>
 
     <div class="buttons-wrap">
-      <button class="btn btn-yes" id="btnYes">Yes! 💖</button>
+      <button class="btn btn-yes locked" id="btnYes" style="transform: scale(0.2)">Yes! 💖</button>
       <button class="btn btn-no" id="btnNo">No</button>
     </div>
 
     <p class="cringe-msg" id="cringeMsg"></p>
     <p class="try-count" id="tryCount"></p>
+    <p class="unlock-hint" id="unlockHint">Yes is shy... try chasing No a few times to wake it up! (5 tries to unlock 💕)</p>
   </div>
 
   <div class="success-overlay" id="successOverlay">
@@ -277,9 +292,13 @@
     const btnYes = document.getElementById('btnYes');
     const cringeMsg = document.getElementById('cringeMsg');
     const tryCountEl = document.getElementById('tryCount');
+    const unlockHint = document.getElementById('unlockHint');
     const successOverlay = document.getElementById('successOverlay');
     const confettiContainer = document.getElementById('confettiContainer');
     const buttonsWrap = document.querySelector('.buttons-wrap');
+
+    const REQUIRED_NO_TRIES = 5;
+    const MIN_YES_SCALE = 0.2;
 
     const cringeMessages = [
       "The No button is shy... it only wants Yes friends! 🥺",
@@ -317,21 +336,36 @@
     }
 
     function moveNoButton() {
-      const rect = wrapRect();
-      const btnRect = btnNo.getBoundingClientRect();
       const newPos = getRandomPosition();
-
       btnNo.style.left = newPos.x + 'px';
       btnNo.style.top = newPos.y + 'px';
+    }
+
+    function updateYesButton() {
+      const tries = Math.min(noClickAttempts, REQUIRED_NO_TRIES);
+      const scale = MIN_YES_SCALE + (tries / REQUIRED_NO_TRIES) * (1 - MIN_YES_SCALE);
+      btnYes.style.transform = `scale(${scale})`;
+      if (noClickAttempts >= REQUIRED_NO_TRIES) {
+        btnYes.classList.remove('locked');
+        btnYes.style.transform = 'scale(1)';
+        unlockHint.textContent = 'Yes is ready! Go ahead, you know you want to 💖';
+      } else {
+        btnYes.classList.add('locked');
+        const left = REQUIRED_NO_TRIES - noClickAttempts;
+        unlockHint.textContent = left === REQUIRED_NO_TRIES
+          ? 'Yes is shy... try chasing No a few times to wake it up! (5 tries to unlock 💕)'
+          : `${left} more ${left === 1 ? 'try' : 'tries'} and Yes will be clickable... 😏`;
+      }
     }
 
     function onNoHover(e) {
       noClickAttempts++;
       moveNoButton();
+      updateYesButton();
       cringeMsg.textContent = cringeMessages[noClickAttempts % cringeMessages.length];
       tryCountEl.textContent = noClickAttempts === 1
-        ? "That was attempt #1... the Yes button is right there! 👀"
-        : `That was attempt #${noClickAttempts}... you're so persistent (say Yes already!) 💕`;
+        ? "That was attempt #1... keep going, Yes is growing! 👀"
+        : `That was attempt #${noClickAttempts}... you're so persistent (Yes is almost ready!) 💕`;
     }
 
     function onNoClick(e) {
@@ -339,10 +373,11 @@
       e.stopPropagation();
       noClickAttempts++;
       moveNoButton();
+      updateYesButton();
       cringeMsg.textContent = cringeMessages[noClickAttempts % cringeMessages.length];
       tryCountEl.textContent = noClickAttempts === 1
-        ? "Nice try! The Yes button doesn't run away though 😊"
-        : `Attempt #${noClickAttempts} — the Yes button is friendlier! 💖`;
+        ? "Nice try! Keep chasing—Yes is waking up 😊"
+        : `Attempt #${noClickAttempts} — Yes is getting bigger! 💖`;
     }
 
     btnNo.addEventListener('mouseenter', onNoHover);
@@ -366,12 +401,17 @@
       }
     }
 
-    btnYes.addEventListener('click', () => {
+    btnYes.addEventListener('click', (e) => {
+      if (btnYes.classList.contains('locked')) {
+        e.preventDefault();
+        return;
+      }
       successOverlay.classList.add('show');
       createConfetti();
     });
 
     moveNoButton();
+    updateYesButton();
   </script>
 </body>
 </html>
