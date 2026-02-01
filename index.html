@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#fff0f3">
   <title>Will you be my Valentine? 💕</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,12 +20,18 @@
       --pink-light: #ffb3c6;
       --pink-dark: #e91e63;
       --cream: #fff5f7;
-      --red: #ff1744;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
     }
 
     body {
       min-height: 100vh;
-      overflow: hidden;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       font-family: 'Quicksand', sans-serif;
       background: linear-gradient(135deg, #fff0f3 0%, #ffe4e9 50%, #ffd6e0 100%);
       display: flex;
@@ -32,9 +39,9 @@
       align-items: center;
       justify-content: center;
       position: relative;
+      padding-bottom: 3rem;
     }
 
-    /* Floating hearts background */
     .hearts-bg {
       position: fixed;
       inset: 0;
@@ -68,9 +75,17 @@
 
     .container {
       text-align: center;
-      padding: 2rem;
+      padding: 1.25rem 1rem 2rem;
       position: relative;
       z-index: 1;
+      width: 100%;
+      max-width: 28rem;
+    }
+
+    @media (min-width: 480px) {
+      .container {
+        padding: 2rem;
+      }
     }
 
     h1 {
@@ -83,10 +98,16 @@
     }
 
     .subtitle {
-      font-size: 1.2rem;
+      font-size: clamp(1rem, 4vw, 1.2rem);
       color: #c2185b;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.75rem;
       opacity: 0.9;
+    }
+
+    @media (min-width: 480px) {
+      .subtitle {
+        margin-bottom: 2.5rem;
+      }
     }
 
     @keyframes pulse {
@@ -96,32 +117,53 @@
 
     .buttons-wrap {
       display: flex;
-      gap: 1.5rem;
+      gap: 1rem;
       justify-content: center;
       align-items: center;
       flex-wrap: wrap;
       min-height: 140px;
-      min-width: 320px;
+      width: 100%;
+      max-width: 20rem;
+      margin: 0 auto;
       position: relative;
+      touch-action: manipulation;
+    }
+
+    @media (min-width: 480px) {
+      .buttons-wrap {
+        min-height: 160px;
+        max-width: 22rem;
+        gap: 1.5rem;
+      }
     }
 
     .btn {
       border: none;
-      padding: 1rem 2.5rem;
-      font-size: 1.3rem;
+      padding: 0.875rem 1.75rem;
+      min-height: 44px;
+      min-width: 44px;
+      font-size: clamp(1.1rem, 4vw, 1.3rem);
       font-family: 'Quicksand', sans-serif;
       font-weight: 700;
       border-radius: 50px;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
       position: relative;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    @media (min-width: 480px) {
+      .btn {
+        padding: 1rem 2.5rem;
+      }
     }
 
     .btn-yes {
       background: linear-gradient(135deg, #ff6b9d, #e91e63);
       color: white;
       box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
-      transition: transform 0.35s ease, box-shadow 0.35s ease, padding 0.35s ease, font-size 0.35s ease;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
     }
 
     .btn-yes.locked {
@@ -143,21 +185,25 @@
       color: white;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       position: absolute;
-      transition: left 0.15s ease-out, top 0.15s ease-out;
-    }
-
-    .btn-no:hover {
-      /* We control position via JS */
+      transition: left 0.08s ease-out, top 0.08s ease-out;
     }
 
     .cringe-msg {
-      margin-top: 1.5rem;
-      min-height: 2.5rem;
+      margin-top: 1.25rem;
+      min-height: 2.25rem;
       font-family: 'Itim', cursive;
-      font-size: 1.3rem;
+      font-size: clamp(1rem, 3.5vw, 1.3rem);
       color: var(--pink-dark);
-      padding: 0 1rem;
+      padding: 0 0.5rem;
       animation: wiggle 0.5s ease-in-out;
+    }
+
+    @media (min-width: 480px) {
+      .cringe-msg {
+        margin-top: 1.5rem;
+        min-height: 2.5rem;
+        padding: 0 1rem;
+      }
     }
 
     @keyframes wiggle {
@@ -168,20 +214,21 @@
 
     .try-count {
       margin-top: 0.5rem;
-      font-size: 0.95rem;
+      font-size: clamp(0.85rem, 2.5vw, 0.95rem);
       color: #ad1457;
       opacity: 0.8;
+      padding: 0 0.25rem;
     }
 
     .unlock-hint {
       margin-top: 0.75rem;
-      font-size: 1rem;
+      font-size: clamp(0.9rem, 2.8vw, 1rem);
       color: #c2185b;
       font-family: 'Itim', cursive;
       min-height: 1.5rem;
+      padding: 0 0.25rem;
     }
 
-    /* Success state */
     .success-overlay {
       position: fixed;
       inset: 0;
@@ -191,7 +238,16 @@
       align-items: center;
       justify-content: center;
       z-index: 100;
+      padding: 1.5rem 1.25rem 4rem;
       animation: fadeIn 0.5s ease;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    @media (min-width: 480px) {
+      .success-overlay {
+        padding: 2rem;
+      }
     }
 
     .success-overlay.show {
@@ -212,9 +268,33 @@
     }
 
     .success-sub {
-      font-size: 1.5rem;
+      font-size: clamp(1.15rem, 4vw, 1.5rem);
       color: #c2185b;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    @media (min-width: 480px) {
+      .success-sub {
+        margin-bottom: 2rem;
+      }
+    }
+
+    .success-ps {
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      color: #ad1457;
+      opacity: 0.85;
+    }
+
+    .success-ps a {
+      color: #c2185b;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .success-ps a:hover {
+      text-decoration: underline;
     }
 
     .confetti-container {
@@ -238,19 +318,42 @@
     }
 
     @keyframes confetti-fall {
-      0% {
-        transform: translateY(-10px) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(100vh) rotate(720deg);
-        opacity: 0;
-      }
+      0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
     }
 
     @keyframes bounce {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.15); }
+    }
+
+    .footer-subtle {
+      position: fixed;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      color: #ad1457;
+      opacity: 0.6;
+      z-index: 2;
+      padding: 0 0.5rem;
+      padding-bottom: env(safe-area-inset-bottom, 0);
+      text-align: center;
+    }
+
+    @media (min-width: 480px) {
+      .footer-subtle {
+        font-size: 0.8rem;
+      }
+    }
+
+    .footer-subtle a {
+      color: #c2185b;
+      text-decoration: none;
+    }
+
+    .footer-subtle a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -271,7 +374,7 @@
     <h1>Will you be my Valentine? 💕</h1>
     <p class="subtitle">(Pretty please with a cherry on top 🍒)</p>
 
-    <div class="buttons-wrap">
+    <div class="buttons-wrap" id="buttonsWrap">
       <button class="btn btn-yes locked" id="btnYes" style="transform: scale(0.2)">Yes! 💖</button>
       <button class="btn btn-no" id="btnNo">No</button>
     </div>
@@ -285,7 +388,10 @@
     <div class="confetti-container" id="confettiContainer"></div>
     <h2 class="success-title">YAY! You said yes! 🎉💕</h2>
     <p class="success-sub">I knew you couldn't resist 😊 Best Valentine's Day ever!</p>
+    <p class="success-ps">P.S. Looking for a gift? <a href="https://www.instagram.com/signaturesilverbymima/" target="_blank" rel="noopener noreferrer">Signature Silvers by MIMA</a> ✨</p>
   </div>
+
+  <p class="footer-subtle">Gift idea: <a href="https://www.instagram.com/signaturesilverbymima/" target="_blank" rel="noopener noreferrer">Signature Silvers by MIMA</a></p>
 
   <script>
     const btnNo = document.getElementById('btnNo');
@@ -295,50 +401,97 @@
     const unlockHint = document.getElementById('unlockHint');
     const successOverlay = document.getElementById('successOverlay');
     const confettiContainer = document.getElementById('confettiContainer');
-    const buttonsWrap = document.querySelector('.buttons-wrap');
+    const buttonsWrap = document.getElementById('buttonsWrap');
 
     const REQUIRED_NO_TRIES = 5;
     const MIN_YES_SCALE = 0.2;
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const FLEE_RADIUS = isTouch ? 100 : 90;
+    const FLEE_COOLDOWN_MS = 400;
+    const WANDER_INTERVAL_MS = 600;
 
     const cringeMessages = [
       "The No button is shy... it only wants Yes friends! 🥺",
       "Oops! Your finger slipped toward Yes, didn't it? 😏",
       "No? In this economy? 💸❤️",
-      "The universe says... try the other button! ✨",
+      "Say Yes & treat yourself to something shiny — Signature Silvers by MIMA ✨",
       "This button has commitment issues. Click Yes instead!",
       "No is just Yes waiting to happen... 💕",
-      "Your smile says Yes! Your cursor is confused 😊",
+      "Valentine's gift idea: handcrafted silver from Signature Silvers by MIMA 💗",
       "Error 404: No not found. Yes is right there! 👉",
-      "The No button went to get milk. It'll be back never. Click Yes!",
-      "I asked the No button—it said it's actually a Yes in disguise 🥸",
+      "Our silver doesn't run away... but this button does! 😂",
       "Pretty please? 🥺 With a thousand cherries on top?",
       "My heart can't process 'No'. Try Yes! ❤️",
-      "The No button is on a coffee break. Yes is here though! ☕",
+      "Something silver says 'I love you' — check out Signature Silvers by MIMA ✨",
       "Your eyes said Yes. I have witnesses. 👀",
       "No has left the chat. Yes is waiting with flowers! 💐",
+      "Say Yes today, shop silver tomorrow — @signaturesilverbymima 💕",
+      "The best Valentine gift? Handcrafted silver. Just saying! ✨",
+      "This button's as elusive as the perfect piece of jewelry... almost! 💎",
+      "Signature Silvers by MIMA — where silver meets love 💖",
+      "Click Yes & maybe get yourself something sparkly from our friends at MIMA 😊",
+      "No button on the run... but our silver stays put! ✨",
     ];
 
     let noClickAttempts = 0;
-    let noPosition = { x: 0, y: 0 };
-    const wrapRect = () => buttonsWrap.getBoundingClientRect();
+    let lastFleeTime = 0;
+    let mouseX = 0, mouseY = 0;
 
-    function getRandomPosition() {
-      const rect = wrapRect();
-      const padding = 20;
-      const btnW = 80;
-      const btnH = 48;
-      const maxX = Math.max(0, rect.width - btnW - padding);
-      const maxY = Math.max(0, rect.height - btnH - padding);
-      return {
-        x: padding + Math.random() * maxX,
-        y: padding + Math.random() * maxY
-      };
+    function getWrapRect() {
+      const r = buttonsWrap.getBoundingClientRect();
+      return { left: r.left, top: r.top, width: r.width, height: r.height };
     }
 
-    function moveNoButton() {
-      const newPos = getRandomPosition();
-      btnNo.style.left = newPos.x + 'px';
-      btnNo.style.top = newPos.y + 'px';
+    function getNoCenter() {
+      const r = btnNo.getBoundingClientRect();
+      return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    }
+
+    function distance(x1, y1, x2, y2) {
+      return Math.hypot(x2 - x1, y2 - y1);
+    }
+
+    function positionFarFromCursor() {
+      const wrap = getWrapRect();
+      const padding = 16;
+      const btnW = 80;
+      const btnH = 48;
+      const maxX = Math.max(0, wrap.width - btnW - padding);
+      const maxY = Math.max(0, wrap.height - btnH - padding);
+
+      let bestX = padding;
+      let bestY = padding;
+      let bestDist = 0;
+
+      for (let i = 0; i < 12; i++) {
+        const x = padding + Math.random() * maxX;
+        const y = padding + Math.random() * maxY;
+        const centerX = wrap.left + x + btnW / 2;
+        const centerY = wrap.top + y + btnH / 2;
+        const d = distance(mouseX, mouseY, centerX, centerY);
+        if (d > bestDist) {
+          bestDist = d;
+          bestX = x;
+          bestY = y;
+        }
+      }
+
+      btnNo.style.left = bestX + 'px';
+      btnNo.style.top = bestY + 'px';
+    }
+
+    function moveNoAndCountAttempt() {
+      const now = Date.now();
+      if (now - lastFleeTime < FLEE_COOLDOWN_MS) return;
+      lastFleeTime = now;
+
+      noClickAttempts++;
+      positionFarFromCursor();
+      updateYesButton();
+      cringeMsg.textContent = cringeMessages[noClickAttempts % cringeMessages.length];
+      tryCountEl.textContent = noClickAttempts === 1
+        ? "That was attempt #1... keep going, Yes is growing! 👀"
+        : `That was attempt #${noClickAttempts}... you're so persistent (Yes is almost ready!) 💕`;
     }
 
     function updateYesButton() {
@@ -358,30 +511,47 @@
       }
     }
 
-    function onNoHover(e) {
-      noClickAttempts++;
-      moveNoButton();
-      updateYesButton();
-      cringeMsg.textContent = cringeMessages[noClickAttempts % cringeMessages.length];
-      tryCountEl.textContent = noClickAttempts === 1
-        ? "That was attempt #1... keep going, Yes is growing! 👀"
-        : `That was attempt #${noClickAttempts}... you're so persistent (Yes is almost ready!) 💕`;
+    function setPointerPosition(clientX, clientY) {
+      mouseX = clientX;
+      mouseY = clientY;
+      const center = getNoCenter();
+      if (distance(mouseX, mouseY, center.x, center.y) < FLEE_RADIUS) {
+        moveNoAndCountAttempt();
+      }
     }
 
-    function onNoClick(e) {
+    function onPointerMove(e) {
+      setPointerPosition(e.clientX, e.clientY);
+    }
+
+    function onPointerDown(e) {
+      setPointerPosition(e.clientX, e.clientY);
+    }
+
+    function wanderNo() {
+      if (noClickAttempts >= REQUIRED_NO_TRIES) return;
+      const center = getNoCenter();
+      if (distance(mouseX, mouseY, center.x, center.y) < FLEE_RADIUS * 1.5) {
+        positionFarFromCursor();
+      }
+      setTimeout(wanderNo, WANDER_INTERVAL_MS);
+    }
+
+    btnNo.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      noClickAttempts++;
-      moveNoButton();
-      updateYesButton();
-      cringeMsg.textContent = cringeMessages[noClickAttempts % cringeMessages.length];
-      tryCountEl.textContent = noClickAttempts === 1
-        ? "Nice try! Keep chasing—Yes is waking up 😊"
-        : `Attempt #${noClickAttempts} — Yes is getting bigger! 💖`;
-    }
+      moveNoAndCountAttempt();
+    });
 
-    btnNo.addEventListener('mouseenter', onNoHover);
-    btnNo.addEventListener('click', onNoClick);
+    document.addEventListener('mousemove', onPointerMove, { passive: true });
+    document.addEventListener('pointermove', onPointerMove, { passive: true });
+    document.addEventListener('pointerdown', onPointerDown, { passive: true });
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches.length) setPointerPosition(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    document.addEventListener('touchstart', (e) => {
+      if (e.touches.length) setPointerPosition(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
 
     const hearts = ['💕', '❤️', '💗', '💖', '💝', '🌸'];
     function createConfetti() {
@@ -410,7 +580,8 @@
       createConfetti();
     });
 
-    moveNoButton();
+    positionFarFromCursor();
+    setTimeout(wanderNo, WANDER_INTERVAL_MS);
     updateYesButton();
   </script>
 </body>
